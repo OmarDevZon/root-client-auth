@@ -1,3 +1,7 @@
+.title {
+    @apply text-red-400 text-4xl font-bold mb-2 
+}
+
 .glass{
     background: rgba(255, 255, 255, 0.55);
     border-radius: 16px;
