@@ -8,6 +8,10 @@ export const navbar = [
     name: "Contact",
   },
   {
+    slug: "/profile",
+    name: "Profile",
+  },
+  {
     slug: "/login",
     name: "Login",
   },
