@@ -1,8 +1,35 @@
 import styles from "../styles/Login.module.css";
 import avatar from "../assets/avatar_2.jpeg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import { useForm } from "react-hook-form";
+import { TLogin, TUser } from "../redux/features/auth/authType";
+import toast from "react-hot-toast";
+import { verifyToken } from "../utils/verifyToken";
+import { setUser } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hooks";
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const [login] = useLoginMutation(undefined);
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit } = useForm();
+  const onSubmit = async (loginInfo: TLogin) => {
+    try {
+      const res = await login(loginInfo).unwrap();
+      const user = verifyToken(res.data.accessToken) as TUser;
+
+      console.log(user.role, "file name : login line number : +-21");
+
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      toast.success(res.message);
+
+      navigate(`/${user.role}/dashboard`);
+    } catch (error) {
+      console.log(error, "file name : login line number : +-17");
+    }
+  };
+
   return (
     <>
       <div className="container mx-auto">
@@ -14,10 +41,7 @@ export const Login = () => {
               <h2>Hello Again!</h2>
             </div>
 
-            <form
-              className="py-1"
-              // onSubmit={handleSubmit()}
-            >
+            <form className="py-1" onSubmit={handleSubmit(onSubmit)}>
               <div className="profile flex justify-center py-2">
                 <img src={avatar} className={styles.profile_img} alt="avatar" />
               </div>
@@ -27,11 +51,15 @@ export const Login = () => {
                   className={styles.textbox}
                   type="email"
                   placeholder="Email"
+                  defaultValue="omar@gmail.com"
+                  {...register("email")}
                 />
                 <input
                   className={styles.textbox}
                   type="password"
                   placeholder="Password"
+                  defaultValue="OMfa35@p"
+                  {...register("password")}
                 />
                 <button className={styles.btn} type="submit">
                   Let's Go

@@ -70,6 +70,7 @@ node >> don't forget restart your application
 
 ----------------------------------------------------------------
 ### My file structure
+```bash 
 ----src
 ----|----component
 ----|----|----layouts
@@ -83,7 +84,7 @@ node >> don't forget restart your application
 ----|----utils
 ----|----context
 ----|----hooks
-
+```
 ----------------------------------------------------------------
 ### Store 
 src/redux/store.tsx 
